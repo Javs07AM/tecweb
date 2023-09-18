@@ -25,12 +25,14 @@
         }
     ?>
      
+     <!--
     <h2>Ejemplo de POST</h2>
     <form action="http://localhost/tecwebCarlos/practicas/p04/index.php" method="post">
         Name: <input type="text" name="name"><br>
         E-mail: <input type="text" name="email"><br>
         <input type="submit">
     </form>
+    -->
     <br>
     <?php
         if(isset($_POST["name"]) && isset($_POST["email"]))
@@ -44,43 +46,43 @@
     <h2>Ejercicio 2</h2>
     <p>Crea un programa para la generación repetitiva de 3 números aleatorios hasta obtener una secuencia compuesta por impar,  par , impar </p>
     
-<?php
+    <?php
 function generarNumeroAleatorio() {
     return rand(1, 1000); 
 }
 
-$matriz = []; 
+$matriz = [];
 $secuenciaEncontrada = false;
-$iteraciones = 0; 
+$iteraciones = 0;
 
 while (!$secuenciaEncontrada) {
     $numero1 = generarNumeroAleatorio();
     $numero2 = generarNumeroAleatorio();
     $numero3 = generarNumeroAleatorio();
-    echo "\n";
 
     // Verifica si la secuencia es impar, par, impar
     if ($numero1 % 2 != 0 && $numero2 % 2 == 0 && $numero3 % 2 != 0) {
         $secuenciaEncontrada = true; // Se encontró la secuencia
-        echo "Secuencia encontrada: $numero1 (impar), $numero2 (par), $numero3 (impar)\n";
         echo "\n";
+        echo "\nSecuencia encontrada: $numero1 (impar), $numero2 (par), $numero3 (impar)\n";
+
+
     }
 
     // Agrega los números a la matriz
     $matriz[] = [$numero1, $numero2, $numero3];
-    echo "\n";
     $iteraciones++;
 }
 
-// Muestra la matriz
-echo "Matriz resultante (Mx3):\n";
+// Muestra la matriz en el formato deseado
 foreach ($matriz as $fila) {
-    echo implode(", ", $fila) . "\n";
+    echo implode(", ", $fila) . "<br>";
 }
 
 // Muestra el número de iteraciones y la cantidad de números obtenidos
-echo "Números obtenidos "  . ($iteraciones * 3) . " en $iteraciones\n iteraciones";
+echo "\nNúmeros obtenidos: " . ($iteraciones * 3) . " en $iteraciones iteraciones";
 ?>
+
 
 <h2>Ejercicio 3</h2>
     <p>Utiliza un ciclo while para encontrar el primer número entero obtenido aleatoriamente, 
@@ -149,9 +151,6 @@ foreach ($arregloLetras as $indice => $valor) {
 
 echo "</table>";
 ?>
-
-<<<<<<< HEAD
-=======
 <h2>Ejercicio 5</h2>
 
 <form method="post" action="procesar.php">
@@ -182,10 +181,5 @@ echo "</table>";
         <input type="hidden" name="consulta_todos" value="true">
         <input type="submit" value="Mostrar Todos los Autos Registrados">
     </form>
-
-
-
->>>>>>> dev
-
 </body>
 </html> 
