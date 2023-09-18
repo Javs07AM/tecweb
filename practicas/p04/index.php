@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="icon" href="../../actividades/01-la_web_estatica/img/logoNexGen.png" type="image/x-icon">
     <title>Práctica 4</title>
 </head>
 <body>
@@ -161,6 +163,23 @@ echo "</table>";
         <input type="submit" value="Enviar">
     </form>
 
+    <h2>Ejercicio 6</h2>
+<h1>Consulta de Parque Vehicular</h1>
+    
+    <!-- Consulta por matrícula -->
+    <form method="post" action="consultar.php">
+        <label for="matricula">Consultar por Matrícula:</label>
+        <input type="text" name="matricula" id="matricula">
+        <input type="submit" value="Consultar">
+    </form>
+
+    <br>
+
+    <!-- Consulta de todos los autos registrados -->
+    <form method="post" action="consultar.php">
+        <input type="hidden" name="consulta_todos" value="true">
+        <input type="submit" value="Mostrar Todos los Autos Registrados">
+    </form>
 
 
 
