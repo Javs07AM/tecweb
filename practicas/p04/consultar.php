@@ -207,7 +207,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $auto = $parqueVehicular[$matricula]['Auto'];
             $propietario = $parqueVehicular[$matricula]['Propietario'];
 
-            echo "<h2>Información del Auto con Matrícula $matricula</h2>";
+            echo "<h3>Información del Auto con Matrícula $matricula</h3>";
             echo "Marca: " . $auto['Marca'] . "<br>";
             echo "Modelo: " . $auto['Modelo'] . "<br>";
             echo "Tipo: " . $auto['Tipo'] . "<br>";
@@ -220,7 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } elseif (isset($_POST['consulta_todos'])) {
         // Mostrar información de todos los autos registrados
-        echo "<h2>Información de Todos los Autos Registrados</h2>";
+        echo "<h3>Información de Todos los Autos Registrados</h3>";
 
         foreach ($parqueVehicular as $matricula => $datos) {
             $auto = $datos['Auto'];
@@ -238,5 +238,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-</body>
-</html>
