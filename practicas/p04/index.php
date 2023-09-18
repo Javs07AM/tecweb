@@ -22,7 +22,7 @@
             }
         }
     ?>
-
+     
     <h2>Ejemplo de POST</h2>
     <form action="http://localhost/tecwebCarlos/practicas/p04/index.php" method="post">
         Name: <input type="text" name="name"><br>
@@ -37,6 +37,117 @@
             echo '<br>';
             echo $_POST["email"];
         }
-    ?>
+    ?> 
+
+    <h2>Ejercicio 2</h2>
+    <p>Crea un programa para la generación repetitiva de 3 números aleatorios hasta obtener una secuencia compuesta por impar,  par , impar </p>
+    
+<?php
+function generarNumeroAleatorio() {
+    return rand(1, 1000); 
+}
+
+$matriz = []; 
+$secuenciaEncontrada = false;
+$iteraciones = 0; 
+
+while (!$secuenciaEncontrada) {
+    $numero1 = generarNumeroAleatorio();
+    $numero2 = generarNumeroAleatorio();
+    $numero3 = generarNumeroAleatorio();
+    echo "\n";
+
+    // Verifica si la secuencia es impar, par, impar
+    if ($numero1 % 2 != 0 && $numero2 % 2 == 0 && $numero3 % 2 != 0) {
+        $secuenciaEncontrada = true; // Se encontró la secuencia
+        echo "Secuencia encontrada: $numero1 (impar), $numero2 (par), $numero3 (impar)\n";
+        echo "\n";
+    }
+
+    // Agrega los números a la matriz
+    $matriz[] = [$numero1, $numero2, $numero3];
+    echo "\n";
+    $iteraciones++;
+}
+
+// Muestra la matriz
+echo "Matriz resultante (Mx3):\n";
+foreach ($matriz as $fila) {
+    echo implode(", ", $fila) . "\n";
+}
+
+// Muestra el número de iteraciones y la cantidad de números obtenidos
+echo "Números obtenidos "  . ($iteraciones * 3) . " en $iteraciones\n iteraciones";
+?>
+
+<h2>Ejercicio 3</h2>
+    <p>Utiliza un ciclo while para encontrar el primer número entero obtenido aleatoriamente, 
+pero que además sea múltiplo de un número dado.</p>
+<h2>Ciclo while</h2>
+<?php
+$numeroDado = isset($_GET['number']) ; // Obtener el número dado de la solicitud GET
+$numeroDado = $_GET['number'];
+$encontrado = false;
+$primerMultiplo = null;
+
+while (!$encontrado) {
+    $numeroAleatorio = rand(1, 1000); // Generar un número aleatorio entre 1 y 100
+
+    if ($numeroAleatorio % $numeroDado == 0) {
+        $encontrado = true;
+        $primerMultiplo = $numeroAleatorio;
+    }
+}
+
+echo "El primer número múltiplo de $numeroDado obtenido aleatoriamente es: $primerMultiplo";
+?>
+
+<h2>Ciclo do-while</h2>
+
+<?php
+$numeroDado1 = isset($_GET['number1']);
+$numeroDado1 = $_GET['number1'];
+$encontrado1= false;
+$primerMultiplo1 = null;
+
+do {
+    $numeroAleatorio1 = rand(1, 1000); // Generar un número aleatorio entre 1 y 100
+
+    if ($numeroAleatorio1 % $numeroDado1 == 0) {
+        $encontrado1 = true;
+        $primerMultiplo1 = $numeroAleatorio1;
+    }
+} while (!$encontrado1);
+
+echo "El primer número múltiplo de $numeroDado1 obtenido aleatoriamente es: $primerMultiplo1";
+?>
+
+<h2>Ejercicio 4</h2>
+<p>Crear un arreglo cuyos índices van de 97 a 122 y cuyos valores son las letras de la ‘a’ 
+a la ‘z’. Usa la función chr(n) que devuelve el caracter cuyo código ASCII es n para poner 
+el valor en cada índice.</p>
+
+<?php
+// Crear el arreglo con un ciclo for
+$arregloLetras = array();
+for ($i = 97; $i <= 122; $i++) {
+    $arregloLetras[$i] = chr($i);
+}
+
+// Crear una tabla XHTML con un ciclo foreach
+echo "<table border='1'>";
+echo "<tr><th>Índice</th><th>Valor</th></tr>";
+
+foreach ($arregloLetras as $indice => $valor) {
+    echo "<tr>";
+    echo "<td>$indice</td>";
+    echo "<td>$valor</td>";
+    echo "</tr>";
+}
+
+echo "</table>";
+?>
+
+
 </body>
-</html>
+</html> 
