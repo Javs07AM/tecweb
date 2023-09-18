@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-=======
     <link rel="stylesheet" href="estilos.css">
     <link rel="icon" href="../../actividades/01-la_web_estatica/img/logoNexGen.png" type="image/x-icon">
->>>>>>> dev
     <title>Práctica 4</title>
 </head>
 <body>
