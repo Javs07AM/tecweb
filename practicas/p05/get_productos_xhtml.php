@@ -8,7 +8,6 @@ if (isset($_GET['tope'])) {
     // Obtén el valor del parámetro 'tope'
     $tope = intval($_GET['tope']); // Convierte a entero
 
-    // Realiza una conexión a la base de datos (debes configurar tus propios datos de conexión)
     $mysqli = new mysqli ('localhost', 'root', '19Molletes*eb', 'marketzone');
 
     // Verifica si hay errores de conexión
@@ -33,17 +32,20 @@ if (isset($_GET['tope'])) {
 
     // Verifica si se encontraron productos
     if ($result && $result->num_rows > 0) {
-        echo '<table border="1">';
-        echo '<tr>';
-        echo '<th>ID</th>';
-        echo '<th>Nombre</th>';
-        echo '<th>Marca</th>';
-        echo '<th>Modelo</th>';
-        echo '<th>Precio</th>';
-        echo '<th>Unidades</th>';
-        echo '<th>Detalles</th>';
-        echo '<th>Imagen</th>';
-        echo '</tr>';
+        echo '<table class="table">';
+		echo '		<thead class="thead-dark">';
+			echo		'<tr>';
+				echo	'<th scope="col">#</th>';
+					echo '<th scope="col">Nombre</th>';
+					echo '<th scope="col">Marca</th>';
+					echo '<th scope="col">Modelo</th>';
+					echo '<th scope="col">Precio</th>';
+					echo '<th scope="col">Unidades</th>';
+					echo '<th scope="col">Detalles</th>';
+					echo '<th scope="col">Imagen</th>';
+					echo '</tr>';
+                    echo '</thead>';
+                    echo '<tbody>';
 
         // Recorre los resultados de la consulta y muestra los productos
         while ($row = $result->fetch_assoc()) {
@@ -57,6 +59,7 @@ if (isset($_GET['tope'])) {
             echo '<td>' . $row['detalles'] . '</td>';
             echo '<td><img src="' . $row['imagen'] . '" alt="' . $row['nombre'] . '" /></td>';
             echo '</tr>';
+            echo '</tbody>';
         }
 
         echo '</table>';
@@ -82,5 +85,6 @@ if (isset($_GET['tope'])) {
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	</head>
 	<body>
+
     </body>
 </html>
