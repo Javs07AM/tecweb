@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $nombre = 'nombre_producto';
 $marca  = 'marca_producto';
 $modelo = 'modelo_producto';
@@ -8,7 +12,7 @@ $unidades = 1;
 $imagen   = 'img/imagen.png';
 
 /** SE CREA EL OBJETO DE CONEXION */
-@$link = new mysqli('localhost', 'root', '12345678a', 'marketzone');	
+@$link = new mysqli('localhost', 'root', '19Molletes*eb', 'marketzone');	
 
 /** comprobar la conexión */
 if ($link->connect_errno) 
