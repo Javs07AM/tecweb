@@ -3,10 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es">
     
 <?php
-// Verifica si se ha proporcionado el parámetro 'tope' en la URL
-if (isset($_GET['tope'])) {
-    // Obtén el valor del parámetro 'tope'
-    $tope = intval($_GET['tope']); // Convierte a entero
+
 
     $mysqli = new mysqli ('localhost', 'root', '19Molletes*eb', 'marketzone');
 
@@ -16,7 +13,7 @@ if (isset($_GET['tope'])) {
     }
 
     // Realiza una consulta para obtener los productos con unidades menores o iguales a $tope
-    $query = "SELECT * FROM productos WHERE unidades <= $tope AND eliminado=0";
+    $query = "SELECT * FROM productos WHERE eliminado=0";
     $result = $mysqli->query($query);
 
     // Comienza a generar la salida XHTML
@@ -28,7 +25,7 @@ if (isset($_GET['tope'])) {
     echo '<title>Productos</title>';
     echo '</head>';
     echo '<body>';
-    echo '<h3>Productos con unidades menores o iguales a ' . $tope . '</h3>';
+    echo '<h3>Productos No eliminados</h3>';
 
     // Verifica si se encontraron productos
     if ($result && $result->num_rows > 0) {
@@ -65,7 +62,7 @@ if (isset($_GET['tope'])) {
         echo '</table>';
         $result->free();
     } else {
-        echo '<p>No se encontraron productos con unidades menores o iguales a ' . $tope . '</p>';
+        echo '<p>No se encontraron productos eliminados /p>';
     }
 
     // Cierra la conexión a la base de datos
@@ -74,10 +71,7 @@ if (isset($_GET['tope'])) {
     // Cierra el documento XHTML
     echo '</body>';
     echo '</html>';
-} else {
-    // Si no se proporciona el parámetro 'tope', muestra un mensaje de error
-    echo 'Parámetro "tope" no proporcionado.';
-}
+
 ?>
 <head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
