@@ -14,9 +14,9 @@
         <label for="marca">Marca:</label>
         <select id="marca" name="marca" required>
             <option value="">Seleccionar marca</option>
-            <option value="Marca1">Samsung</option>
-            <option value="Marca2">Iphone</option>
-            <option value="Marca3">Huawei</option>
+            <option value="Samsung">Samsung</option>
+            <option value="Iphone">Iphone</option>
+            <option value="Huawei">Huawei</option>
         </select><br><br>
 
         <label for="modelo">Modelo:</label>
@@ -79,7 +79,7 @@
 
             if (imagen.length === 0) {
                 // Usar la ruta de imagen por defecto si no se proporciona una
-                document.getElementById("imagen").value = "ruta_por_defecto.jpg";
+                document.getElementById("imagen").value = "http://localhost/tecwebCarlosactividades/01-la_web_estatica/img/img.png";
             }
 
             return true;

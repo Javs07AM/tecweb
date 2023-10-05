@@ -26,8 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $detalles = $_POST["detalles"];
     $imagen = $_POST["imagen"];
 
+    // Aquí debes obtener el ID del registro que deseas editar, ya sea a través de un parámetro en la URL o de alguna otra forma
+    $id = $_POST["id"]; // Supongamos que el ID se envía a través de un campo oculto en el formulario
+
     // Ejecuta la actualización del registro
-    $sql = "UPDATE productos SET nombre='$nombre', marca='$marca', modelo='$modelo', precio=$precio, unidades=$unidades, detalles='$detalles', imagen='$imagen' WHERE id=1";
+    $sql = "UPDATE productos SET nombre='$nombre', marca='$marca', modelo='$modelo', precio=$precio, unidades=$unidades, detalles='$detalles', imagen='$imagen' WHERE id=$id";
 
     if (mysqli_query($link, $sql)) {
         echo "Registro actualizado.";
@@ -35,8 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "ERROR: No se ejecutó la consulta. " . mysqli_error($link);
     }
 } else {
-    // Si el formulario no ha sido enviado, obtén los valores existentes del registro
-    $sql = "SELECT nombre, marca, modelo, precio, unidades, detalles, imagen FROM productos WHERE id=1";
+    // Si el formulario no ha sido enviado y tienes el ID del registro que deseas cargar, obtén los valores existentes del registro
+    $id = $_GET["id"]; // Supongamos que el ID se pasa a través de la URL
+    $sql = "SELECT nombre, marca, modelo, precio, unidades, detalles, imagen FROM productos WHERE id=$id";
     $result = mysqli_query($link, $sql);
 
     if ($result) {
@@ -72,6 +76,7 @@ mysqli_close($link);
 <body>
     <h1>Actualizar de Productos</h1>
     <form action="formulario_productos_v3.php" method="POST" onsubmit="return validarFormulario()">
+    <input type="hidden" name="id" value="<?php echo $id; ?>">
     <label for="nombre">Nombre del Producto:</label>
 <input type="text" id="nombre" name="nombre" required value="<?php echo $nombre_existente; ?>"><br><br>
 
@@ -143,7 +148,7 @@ mysqli_close($link);
 
             if (imagen.length === 0) {
                 // Usar la ruta de imagen por defecto si no se proporciona una
-                document.getElementById("imagen").value = "ruta_por_defecto.jpg";
+                document.getElementById("imagen").value = "http://localhost/tecwebCarlos/actividades/01-la_web_estatica/img/img.png";
             }
 
             return true;

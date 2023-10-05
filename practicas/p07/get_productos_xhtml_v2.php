@@ -57,7 +57,13 @@ if (isset($_GET['tope'])) {
             echo '<td>' . $row['precio'] . '</td>';
             echo '<td>' . $row['unidades'] . '</td>';
             echo '<td>' . $row['detalles'] . '</td>';
-            echo '<td><img src="' . $row['imagen'] . '" alt="' . $row['nombre'] . '" /></td>';
+            echo '<td>';
+            if (!empty($row['imagen'])) {
+            echo '<img src="' . $row['imagen'] . '" alt="' . $row['nombre'] . '" />';
+            } else {
+            echo '<img src="http://localhost/tecwebCarlos/actividades/01-la_web_estatica/img/img.png" alt="Imagen por defecto" />';
+            }
+            echo '</td>';
             echo '<td><form action="formulario_productos_v3.php" method="GET">';
             echo '<input type="hidden" name="id" value="' . $row['id'] . '">';
             echo '<button type="submit">Modificar</button>';
