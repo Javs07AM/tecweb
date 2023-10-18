@@ -58,7 +58,7 @@
             if (!empty($row['imagen'])) {
             echo '<img src="' . $row['imagen'] . '" alt="' . $row['nombre'] . '" />';
             } else {
-            echo '<img src="http://localhost/tecwebCarlos/actividades/01-la_web_estatica/img/img.png" alt="Imagen por defecto" width="150" />';
+            echo '<img src="http://localhost/tecwebcopia/actividades/01-la_web_estatica/img/img.png" alt="Imagen por defecto" width="150" />';
             }
             echo '</td>';
             echo '<td><form action="formulario_productos_v3.php" method="GET">';
