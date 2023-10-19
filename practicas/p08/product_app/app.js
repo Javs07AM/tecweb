@@ -24,7 +24,7 @@ function buscarID(e) {
     var client = getXMLHttpRequest();
     client.open('POST', './backend/read.php', true);
     client.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    client.onreadystatechange = function () {
+    client.onreadystatechange = function () { //esta propiedad cambia cuando se regrese una respuesta
         // SE VERIFICA SI LA RESPUESTA ESTÁ LISTA Y FUE SATISFACTORIA
         if (client.readyState == 4 && client.status == 200) {
             console.log('[CLIENTE]\n'+client.responseText);
@@ -32,83 +32,47 @@ function buscarID(e) {
             // SE OBTIENE EL OBJETO DE DATOS A PARTIR DE UN STRING JSON
             let productos = JSON.parse(client.responseText);    // similar a eval('('+client.responseText+')');
             
+            
             // SE VERIFICA SI EL OBJETO JSON TIENE DATOS
             if(Object.keys(productos).length > 0) {
                 // SE CREA UNA LISTA HTML CON LA DESCRIPCIÓN DEL PRODUCTO
-                let descripcion = '';
-                    descripcion += '<li>precio: '+productos.precio+'</li>';
-                    descripcion += '<li>unidades: '+productos.unidades+'</li>';
-                    descripcion += '<li>modelo: '+productos.modelo+'</li>';
-                    descripcion += '<li>marca: '+productos.marca+'</li>';
-                    descripcion += '<li>detalles: '+productos.detalles+'</li>';
-                
-                // SE CREA UNA PLANTILLA PARA CREAR LA(S) FILA(S) A INSERTAR EN EL DOCUMENTO HTML
                 let template = '';
+                productos.forEach(function (producto) {/* va iterando entre cada elemento del productos y cada elemento se le llama
+                producto*/
+                    // SE CREA LA DESCRIPCIÓN DEL PRODUCTO
+                    let descripcion = '';
+                    descripcion += '<li>precio: '+producto.precio+'</li>';
+                    descripcion += '<li>unidades: '+producto.unidades+'</li>';
+                    descripcion += '<li>modelo: '+producto.modelo+'</li>';
+                    descripcion += '<li>marca: '+producto.marca+'</li>';
+                    descripcion += '<li>detalles: '+producto.detalles+'</li>';
+                    // SE llena la PLANTILLA PARA CREAR LA(S) FILA(S) A INSERTAR EN EL DOCUMENTO HTML
                     template += `
                         <tr>
-                            <td>${productos.id}</td>
-                            <td>${productos.nombre}</td>
+                            <td>${producto.id}</td>
+                            <td>${producto.nombre}</td>
                             <td><ul>${descripcion}</ul></td>
                         </tr>
                     `;
-
+                });
                 // SE INSERTA LA PLANTILLA EN EL ELEMENTO CON ID "productos"
+                document.getElementById("productos").innerHTML = template;
+            }
+            else{
+                let template = '';
+                template += `
+                    <tr>
+                        <td>No se encontraron resultados</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                `;
                 document.getElementById("productos").innerHTML = template;
             }
         }
     };
     client.send("id="+id);
 }
-
-//FUNCIÓN CALLBACK DE BOTÓN "BuscarNombre"
-function buscarNombre(e) {
-    e.preventDefault();
-
-    // Obtener el nombre a buscar desde el formulario
-    var nombre = document.getElementById('searchName').value;
-
-    // Crear el objeto de conexión asíncrona al servidor
-    var client = getXMLHttpRequest();
-    client.open('POST', './backend/searchByName.php', true);
-    client.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    client.onreadystatechange = function () {
-        // Verificar si la respuesta está lista y fue satisfactoria
-        if (client.readyState == 4 && client.status == 200) {
-            console.log('[CLIENTE]\n' + client.responseText);
-
-            // Obtener el objeto de datos a partir de una cadena JSON
-            let productos = JSON.parse(client.responseText);
-
-            // Verificar si el objeto JSON tiene datos
-            if (productos.length > 0) {
-                // Crear una plantilla para crear las filas a insertar en el documento HTML
-                let template = '';
-                for (let i = 0; i < productos.length; i++) {
-                    let descripcion = '<ul>';
-                    descripcion += '<li>precio: ' + productos[i].precio + '</li>';
-                    descripcion += '<li>unidades: ' + productos[i].unidades + '</li>';
-                    descripcion += '<li>modelo: ' + productos[i].modelo + '</li>';
-                    descripcion += '<li>marca: ' + productos[i].marca + '</li>';
-                    descripcion += '<li>detalles: ' + productos[i].detalles + '</li>';
-                    descripcion += '</ul>';
-
-                    template += `
-                        <tr>
-                            <td>${productos[i].id}</td>
-                            <td>${productos[i].nombre}</td>
-                            <td>${descripcion}</td>
-                        </tr>
-                    `;
-                }
-
-                // Insertar la plantilla en el elemento con ID "productos"
-                document.getElementById("productos").innerHTML = template;
-            }
-        }
-    };
-    client.send("nombre=" + nombre);
-}
-
 
 // FUNCIÓN CALLBACK DE BOTÓN "Agregar Producto"
 function agregarProducto(e) {
@@ -120,8 +84,73 @@ function agregarProducto(e) {
     var finalJSON = JSON.parse(productoJsonString);
     // SE AGREGA AL JSON EL NOMBRE DEL PRODUCTO
     finalJSON['nombre'] = document.getElementById('name').value;
+
+    console.log(finalJSON['precio']);
+
+
+    var nombre=finalJSON['nombre'];
+    var marca = finalJSON['marca'];
+    var modelo=finalJSON['modelo'];
+    var precio=finalJSON['precio'];
+    var detalles=finalJSON['detalles'];
+    var unidades=finalJSON['unidades'];
+    var imagen=finalJSON['imagen'];
+
+    if(nombre.length<=0 || nombre.length>100){
+        alert('EL nombre no debe de tener menos o 0 caracteres ni tampoco tener mas de 100!!!');
+        return; 
+        /*con return, la función agregarProducto se detendrá inmediatamente en ese punto y no ejecutará el código restante en la función. */
+    }
+    else{
+        /*se verifica el modelo*/
+        var modelo = modelo.trim();
+        var esAlfanumerico = /^[A-Z]{2}-\d{3}$/.test(modelo); 
+
+        if (!esAlfanumerico) {
+            alert('El campo "modelo" es obligatorio y no puede estar en blanco.');
+            return; 
+        }
+        else{
+            var esPrecioValido = !isNaN(parseFloat(precio)) && isFinite(precio) && parseFloat(precio) > 99.99;
+            if (!esPrecioValido) {
+                alert('El precio ingresado no es un número válido o debe de ser mayor a 99.99.');
+                return; 
+            } 
+            else {
+                if(detalles.length >= 250){
+                    alert('Los detalles deben de ser menos de 250 caracteres');
+                    return; 
+                }
+                else{
+                    if(parseInt(unidades) == 0){
+                        alert('debe ingresar una cantidad unidades');
+                        return; 
+                    }
+                    else{
+                        var unidadesNumericas = parseInt(unidades);
+                        if (isNaN(unidadesNumericas) || unidadesNumericas < 0) {
+                            alert('Las unidades ingresadas no son un número válido o son menores que 0.');
+                            return; 
+                        } else {
+                            if (imagen.trim() === "") {
+                                imagen = 'img/default.png';
+
+                                finalJSON['imagen'] = imagen;
+                                alert('agregaremos una imagen por defecto');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // SE OBTIENE EL STRING DEL JSON FINAL
     productoJsonString = JSON.stringify(finalJSON,null,2);
+    /*Entonces, en resumen, este código toma un JSON en formato de cadena, lo convierte en un objeto JavaScript, agrega 
+    un nuevo campo "nombre" a ese objeto y luego lo convierte nuevamente en una cadena JSON formateada antes de enviarlo
+    al servidor. */
+    console.log(productoJsonString);
 
     // SE CREA EL OBJETO DE CONEXIÓN ASÍNCRONA AL SERVIDOR
     var client = getXMLHttpRequest();
@@ -131,9 +160,12 @@ function agregarProducto(e) {
         // SE VERIFICA SI LA RESPUESTA ESTÁ LISTA Y FUE SATISFACTORIA
         if (client.readyState == 4 && client.status == 200) {
             console.log(client.responseText);
+            window.alert(client.responseText);
         }
     };
+    
     client.send(productoJsonString);
+    
 }
 
 // SE CREA EL OBJETO DE CONEXIÓN COMPATIBLE CON EL NAVEGADOR
