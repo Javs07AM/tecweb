@@ -5,7 +5,7 @@ var baseJSON = {
     "modelo": "XX-000",
     "marca": "NA",
     "detalles": "NA",
-    "imagen": "img/default.png"
+    "imagen": "http://localhost/tecwebCarlosactividades/01-la_web_estatica/img/img.png"
   };
 
 function init() {
