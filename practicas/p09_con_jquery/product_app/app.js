@@ -5,9 +5,9 @@ var baseJSON = {
     "modelo": "XX-000",
     "marca": "NA",
     "detalles": "NA",
-    "imagen": "http://localhost/tecwebCarlosactividades/01-la_web_estatica/img/img.png"
+    "imagen": null
   };
-  let edit = false;
+  var edit = false;
 function init() {
     /**
      * Convierte el JSON a string para poder mostrarlo
@@ -58,6 +58,11 @@ function listarProductos() {
                             <a href="#" class="product-item" onclick="editarProducto()">${producto.nombre}</a>
                             </td>
                             <td><ul>${descripcion}</ul></td>
+                            <td>
+                                <button class="product-item btn btn-primary" onclick="editarProducto()">
+                                    Editar
+                                </button>
+                            </td>
                             <td>
                                 <button class="product-delete btn btn-danger" onclick="eliminarProducto()">
                                     Eliminar
@@ -124,6 +129,11 @@ function buscarProducto(e) {
                             </td>
                             <td><ul>${descripcion}</ul></td>
                             <td>
+                                <button class="product-item btn btn-primary" onclick="editarProducto()">
+                                    Editar
+                                </button>
+                            </td>
+                            <td>
                                 <button class="product-delete btn btn-danger" onclick="eliminarProducto()">
                                     Eliminar
                                 </button>
@@ -146,6 +156,9 @@ function buscarProducto(e) {
     };
     client.send();
 }
+
+//MANDAMOS AL SISTEMA UNA VEZ QUE EL USARIO TECLEE ALGUNA BUSQUEDA ESTA SE VAYA MOSTRANDO INMEDIATAMENTE
+document.getElementById('search').addEventListener('input', buscarProducto);
 
 // FUNCIÓN CALLBACK DE BOTÓN "Agregar Producto"
 function agregarProducto(e) {
@@ -267,91 +280,119 @@ function eliminarProducto() {
 }
 
 function editarProducto() {
-    if (confirm("De verdad deseas editar el Producto")) {
+    if (confirm("¿De verdad deseas editar el Producto?")) {
         var id = event.target.parentElement.parentElement.getAttribute("productId");
-
-        // Establecemos el modo edición a true
         edit = true;
-        // SE CREA EL OBJETO DE CONEXIÓN ASÍNCRONA AL SERVIDOR
         var client = getXMLHttpRequest();
         client.open('POST', './backend/product-single.php?id=' + id, true);
         client.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         client.onreadystatechange = function () {
-            // SE VERIFICA SI LA RESPUESTA ESTÁ LISTA Y FUE SATISFACTORIA
             if (client.readyState == 4 && client.status == 200) {
-                // Se obtiene el objeto de datos a partir de un string JSON
                 let respuesta = JSON.parse(client.responseText);
 
-                // Llenar los campos del formulario con los valores obtenidos
+                // Crear un nuevo objeto JSON excluyendo la propiedad "id"
+                var productoEditable = Object.assign({}, respuesta);
+                delete productoEditable.id;
+
+                // Mostrar el nuevo objeto JSON en el campo de descripción
                 document.getElementById('name').value = respuesta.nombre || '';
-                
-                // Mostrar la descripción con formato legible
-                document.getElementById('description').value = JSON.stringify(respuesta, null, 4);
-
+                document.getElementById('description').value = JSON.stringify(productoEditable, null, 4);
                 document.getElementById('productId').value = id;
-               // edit = true;
+                edit = true;
 
-                // Actualizar la interfaz para editar
-                document.getElementById('product-form').setAttribute('onsubmit', 'editarOAgregarProducto(event)');
-                document.querySelector('.btn-primary').innerText = 'Guardar Cambios';
-                //editarOAgregarProducto();
-         }
-    }
+                // Mostrar el botón "Guardar Cambios" y ocultar el botón "Agregar Producto"
+                document.getElementById('guardarCambios').style.display = 'block';
+                document.getElementById('productId').style.display = 'none';
+            }
+        };
         client.send();
     }
 }
 
-function editarOAgregarProducto(event) {
-    event.preventDefault(); // Prevenir la acción predeterminada del formulario
 
-    // Obtener el ID del producto a editar (si está en modo edición)
-    var id = edit ? document.getElementById('productId').value : '';
+function editarOAgregarProducto(e) {
+    e.preventDefault();
 
-    // Obtener los datos del formulario
-    var nombre = document.getElementById('name').value;
-    var descripcion = document.getElementById('description').value;
+    // SE OBTIENE DESDE EL FORMULARIO EL JSON A ENVIAR
+    var productoJsonString = document.getElementById('description').value;
+    // SE CONVIERTE EL JSON DE STRING A OBJETO
+    var finalJSON = JSON.parse(productoJsonString);
 
-    // Crear un objeto JSON con los datos del formulario
-    var producto = {
-        nombre: nombre,
-        descripcion: descripcion
-    };
+    // Se establece el ID del producto para editar si es una edición
+    if (edit) {
+        finalJSON['id'] = document.getElementById('productId').value;
+    }
 
-    // Realizar una solicitud AJAX para enviar los datos al servidor
+    // Validación del precio (debe ser requerido y mayor a 99.99)
+    var precio = parseFloat(finalJSON['precio']);
+    if (isNaN(precio)) {
+        alert("El precio es requerido y debe ser un número válido.");
+        return;
+    }
+    if (precio <= 99.99) {
+        alert("El precio debe ser mayor a 99.99.");
+        return;
+    }
+
+    // Validación de los detalles (opcionales, si se utilizan, deben tener 250 caracteres o menos)
+    var detalles = finalJSON['detalles'];
+    if (detalles && detalles.length > 250) {
+        alert("Los detalles no pueden tener más de 250 caracteres.");
+        return;
+    }
+
+    // Validación de las unidades (deben ser requeridas y el número debe ser mayor o igual a 0)
+    var unidades = parseInt(finalJSON['unidades']);
+    if (isNaN(unidades)) {
+        alert("Las unidades son requeridas y deben ser un número válido.");
+        return;
+    }
+    if (unidades < 0) {
+        alert("Las unidades deben ser iguales o mayores a 0.");
+        return;
+    }
+    // SE OBTIENE EL STRING DEL JSON FINAL
+    productoJsonString = JSON.stringify(finalJSON, null, 2);
+
+    // SE CREA EL OBJETO DE CONEXIÓN ASÍNCRONA AL SERVIDOR
     var client = getXMLHttpRequest();
-    var url = edit === false ? './backend/product-add.php?id=' + id : './backend/product-edit.php?id=';
+
+    // La URL a la que se envía la solicitud depende de si es una edición o una adición
+    var url = edit ? './backend/product-edit.php' : './backend/product-add.php';
 
     client.open('POST', url, true);
-    client.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    client.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
     client.onreadystatechange = function () {
-        // Verificar si la respuesta está lista y fue satisfactoria
+        // SE VERIFICA SI LA RESPUESTA ESTÁ LISTA Y FUE SATISFACTORIA
         if (client.readyState == 4 && client.status == 200) {
-            // Manejar la respuesta del servidor, si es necesario
             console.log(client.responseText);
+            // SE OBTIENE EL OBJETO DE DATOS A PARTIR DE UN STRING JSON
+            let respuesta = JSON.parse(client.responseText);
 
-            // Restaurar la interfaz para agregar un producto
-            document.getElementById('product-form').setAttribute('onsubmit', 'editarOAgregarProducto(event)');
-            document.querySelector('.btn-primary').innerText = 'Agregar Producto';
+            // SE CREA UNA PLANTILLA PARA CREAR INFORMACIÓN DE LA BARRA DE ESTADO
+            let template_bar = '';
+            template_bar += `
+                <li style="list-style: none;">status: ${respuesta.status}</li>
+                <li style="list-style: none;">message: ${respuesta.message}</li>
+            `;
 
-            // Limpiar los campos del formulario
-            document.getElementById('name').value = '';
-            document.getElementById('description').value = '';
-            document.getElementById('productId').value = '';
+            // SE HACE VISIBLE LA BARRA DE ESTADO
+            document.getElementById("product-result").className = "card my-4 d-block";
+            // SE INSERTA LA PLANTILLA PARA LA BARRA DE ESTADO
+            document.getElementById("container").innerHTML = template_bar;
 
-            // Restablecer el modo edición a falso
-            edit = false;
-
-            // Listar los productos actualizados
-            listarProductos();
+              // Limpiar el formulario
+              document.getElementById('name').value = '';
+              document.getElementById('description').value = '';
+              document.getElementById('productId').value = '';
+              
+              init();
+            // SE LISTAN TODOS LOS PRODUCTOS
+           //listarProductos();
         }
     };
-
-    // Enviar el objeto JSON como datos al servidor
-    client.send(JSON.stringify(producto));
+    client.send(productoJsonString);
 }
-
-
-
 
 
 

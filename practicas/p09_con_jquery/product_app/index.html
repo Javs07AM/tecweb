@@ -37,10 +37,13 @@
                 <div class="form-group">
                   <textarea class="form-control" id="description" cols="30" rows="10" placeholder="JSON de producto"></textarea>
                 </div>
-                <input type="hidden" id="productId">
+                <input type="hidden" id="productId" style="display: block;">
                 <button class="btn btn-primary btn-block text-center" type="submit" onclick="agregarProducto(event)">
                   Agregar Producto
                 </button>
+                <button class="btn btn-primary btn-block text-center" type="submit" onclick="editarOAgregarProducto(event)" id="guardarCambios" style="display: none;">
+                  Guardar Cambios
+                </button>                
               </form>
             </div>
           </div>
