@@ -118,6 +118,53 @@ $(document).ready(function(){
         }
     });
 
+    // Espera a que se realice una entrada de texto en el campo de nombre
+    $('#nombre').keyup(function() {
+        if ($('#nombre').val()) {
+            let search = $('#nombre').val();
+            $.ajax({
+                url: './backend/product-search-name.php', // Ruta al archivo PHP para buscar productos por nombre
+                data: { nombre: search }, // Enviando el nombre del producto como parámetro POST
+                type: 'POST', // Utilizar una solicitud POST
+                success: function(response) {
+                   console.log(response);
+                    // Limpiar la lista de productos antes de mostrar nuevos resultados
+                    $('#products').empty();
+                    if (response.status === 'success') {
+                        if (response.data.length > 0) {
+                            response.data.forEach(function(product) {
+                                // Agrega una fila a la tabla para cada producto
+                                $('#products').append(
+                                    `<tr>
+                                        <td>${product.id}</td>
+                                        <td>${product.nombre}</td>
+                                        <td>${product.marca}</td>
+                                        <td>${product.modelo}</td>
+                                        <td>${product.precio}</td>
+                                        <td>${product.detalles}</td>
+                                        <td>${product.unidades}</td>
+                                        <td>${product.imagen}</td>
+                                    </tr>`
+                                );
+                            });
+                        } else {
+                            // Mostrar un mensaje si no se encontraron productos
+                            $('#products').html(`<tr><td colspan="8">No se encontraron productos con ese nombre.</td></tr>`);
+                        }
+                    } 
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        } else {
+            // Limpiar la lista de productos si no hay texto en la búsqueda
+            $('#products').empty();
+        }
+    });
+    
+
+
     $('#product-form').submit(e => {
         e.preventDefault();
         
