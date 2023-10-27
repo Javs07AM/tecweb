@@ -1,29 +1,42 @@
 <?php
-    include_once __DIR__.'/database.php';
+// Incluir el archivo de conexión a la base de datos
+include_once __DIR__.'/database.php';
 
-    // SE CREA EL ARREGLO QUE SE VA A DEVOLVER EN FORMA DE JSON
-    $data = array();
+// Arreglo para almacenar la respuesta
+$response = array();
 
-    if( isset($_POST['id']) ) {
-        $id = $_POST['id'];
-        // SE REALIZA LA QUERY DE BÚSQUEDA Y AL MISMO TIEMPO SE VALIDA SI HUBO RESULTADOS
-        if ( $result = $conexion->query("SELECT * FROM productos WHERE id = {$id}") ) {
-            // SE OBTIENEN LOS RESULTADOS
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
+    // Realizar la consulta SQL para buscar el producto por ID
+    $sql = "SELECT * FROM productos WHERE id = $id";
+    $result = $conexion->query($sql);
+
+    if ($result) {
+        // Verificar si se encontraron resultados
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
 
-            if(!is_null($row)) {
-                // SE CODIFICAN A UTF-8 LOS DATOS Y SE MAPEAN AL ARREGLO DE RESPUESTA
-                foreach($row as $key => $value) {
-                    $data[$key] = utf8_encode($value);
-                }
+            // Crear un nuevo arreglo para almacenar los datos de respuesta
+            $responseData = array();
+
+            // Recorrer las columnas y agregarlas al arreglo de respuesta
+            foreach ($row as $key => $value) {
+                $responseData[$key] = $value;
             }
-            $result->free();
-        } else {
-            die('Query Error: '.mysqli_error($conexion));
+
+            // Agregar el arreglo de respuesta al arreglo principal
+            $response = $responseData;
         }
-        $conexion->close();
+
+        $result->free();
+    } else {
+        $response['error'] = 'Error en la consulta: ' . mysqli_error($conexion);
     }
 
-    // SE HACE LA CONVERSIÓN DE ARRAY A JSON
-    echo json_encode($data, JSON_PRETTY_PRINT);
+    // Cerrar la conexión a la base de datos
+    $conexion->close();
+}
+
+// Convertir el arreglo de respuesta a JSON
+echo json_encode($response, JSON_PRETTY_PRINT);
 ?>

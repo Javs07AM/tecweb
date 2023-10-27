@@ -1,28 +1,43 @@
 <?php
-    include_once __DIR__.'/database.php';
+// Incluir el archivo de conexión a la base de datos
+include_once __DIR__.'/database.php';
 
-    // SE CREA EL ARREGLO QUE SE VA A DEVOLVER EN FORMA DE JSON
-    $data = array(
-        'status'  => 'error',
-        'message' => 'La consulta falló'
-    );
-    // SE VERIFICA HABER RECIBIDO EL ID
-    if( isset($_POST['id']) ) {
-        $jsonOBJ = json_decode( json_encode($_POST) );
-        // SE REALIZA LA QUERY DE BÚSQUEDA Y AL MISMO TIEMPO SE VALIDA SI HUBO RESULTADOS
-        $sql =  "UPDATE productos SET nombre='{$jsonOBJ->nombre}', marca='{$jsonOBJ->marca}',";
-        $sql .= "modelo='{$jsonOBJ->modelo}', precio={$jsonOBJ->precio}, detalles='{$jsonOBJ->detalles}',"; 
-        $sql .= "unidades={$jsonOBJ->unidades}, imagen='{$jsonOBJ->imagen}' WHERE id={$jsonOBJ->id}";
-        $conexion->set_charset("utf8");
-        if ( $conexion->query($sql) ) {
-            $data['status'] =  "success";
-            $data['message'] =  "Producto actualizado";
-		} else {
-            $data['message'] = "ERROR: No se ejecuto $sql. " . mysqli_error($conexion);
-        }
-		$conexion->close();
-    } 
-    
-    // SE HACE LA CONVERSIÓN DE ARRAY A JSON
-    echo json_encode($data, JSON_PRETTY_PRINT);
+// Arreglo para almacenar la respuesta
+$response = array(
+    'status' => 'error',
+    'message' => 'La consulta falló'
+);
+
+// Verificar si se ha recibido el ID y los datos del producto
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
+    // Obtener y sanitizar los datos del formulario
+    $nombre = mysqli_real_escape_string($conexion, $_POST['nombre']);
+    $marca = mysqli_real_escape_string($conexion, $_POST['marca']);
+    $modelo = mysqli_real_escape_string($conexion, $_POST['modelo']);
+    $precio = floatval($_POST['precio']);
+    $detalles = mysqli_real_escape_string($conexion, $_POST['detalles']);
+    $unidades = intval($_POST['unidades']);
+    $imagen = mysqli_real_escape_string($conexion, $_POST['imagen']);
+
+    // Construir la consulta SQL de actualización
+    $sql = "UPDATE productos SET nombre='$nombre', marca='$marca', modelo='$modelo', precio=$precio, detalles='$detalles', unidades=$unidades, imagen='$imagen' WHERE id=$id";
+
+    // Establecer el conjunto de caracteres a UTF-8
+    $conexion->set_charset("utf8");
+
+    // Ejecutar la consulta SQL de actualización
+    if ($conexion->query($sql)) {
+        $response['status'] = 'success';
+        $response['message'] = 'Producto actualizado';
+    } else {
+        $response['message'] = 'ERROR: No se ejecutó la consulta SQL. ' . mysqli_error($conexion);
+    }
+
+    // Cerrar la conexión a la base de datos
+    $conexion->close();
+}
+
+// Convertir el arreglo de respuesta a JSON
+echo json_encode($response, JSON_PRETTY_PRINT);
 ?>

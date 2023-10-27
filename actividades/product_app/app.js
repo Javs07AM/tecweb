@@ -121,7 +121,7 @@ $(document).ready(function(){
     $('#product-form').submit(e => {
         e.preventDefault();
         
-
+    const id = $('#idProducto').val()
     const nombre = $('#nombre').val().trim();
     const marca = $('#marca').val().trim();
     const modelo = $('#modelo').val().trim();
@@ -129,6 +129,8 @@ $(document).ready(function(){
     const detalles = $('#detalles').val().trim();
     const unidades = parseInt($('#unidades').val());
     let imagen = $('#imagen').val().trim();
+
+    
 
     // Validaciones
     if (nombre.length === 0 || nombre.length > 100) {
@@ -141,7 +143,7 @@ $(document).ready(function(){
         return;
     }
 
-    if (modelo.length === 0 || modelo.length > 25) {
+    if (modelo.length === 0) {
         alert('El modelo debe ser requerido y tener 25 caracteres o menos.');
         return;
     }
@@ -163,11 +165,12 @@ $(document).ready(function(){
 
     if (imagen === '') {
         // Si no se proporciona una ruta de imagen, usa una ruta por defecto
-        imagen = 'ruta_por_defecto.jpg'; // Reemplaza 'ruta_por_defecto.jpg' por la ruta de tu imagen por defecto
+        imagen = 'http://localhost/tecwebCarlos/actividades/01-la_web_estatica/img/img.png'; // Reemplaza 'ruta_por_defecto.jpg' por la ruta de tu imagen por defecto
     }
 
     // Crear el objeto de datos a enviar
     const postData = {
+        id: id,
         nombre: nombre,
         marca: marca,
         modelo: modelo,
@@ -216,25 +219,26 @@ $(document).ready(function(){
     $(document).on('click', '.product-item', (e) => {
         const element = $(this)[0].activeElement.parentElement.parentElement;
         const id = $(element).attr('productId');
-        $.post('./backend/product-single.php', {id}, (response) => {
+        $.post('./backend/product-single.php', { id }, (response) => {
             // SE CONVIERTE A OBJETO EL JSON OBTENIDO
             let product = JSON.parse(response);
+    
             // SE INSERTAN LOS DATOS ESPECIALES EN LOS CAMPOS CORRESPONDIENTES
-            $('#name').val(product.nombre);
-            // EL ID SE INSERTA EN UN CAMPO OCULTO PARA USARLO DESPUÉS PARA LA ACTUALIZACIÓN
-            $('#productId').val(product.id);
-            // SE ELIMINA nombre, eliminado E id PARA PODER MOSTRAR EL JSON EN EL <textarea>
-            delete(product.nombre);
-            delete(product.eliminado);
-            delete(product.id);
-            // SE CONVIERTE EL OBJETO JSON EN STRING
-            let JsonString = JSON.stringify(product,null,2);
-            // SE MUESTRA STRING EN EL <textarea>
-            $('#description').val(JsonString);
-            
+            $('#nombre').val(product.nombre);
+            $('#marca').val(product.marca);
+            $('#modelo').val(product.modelo);
+            $('#precio').val(product.precio);
+            $('#detalles').val(product.detalles);
+            $('#unidades').val(product.unidades);
+            $('#imagen').val(product.imagen);
+    
+            // SE PONE EL ID DEL PRODUCTO EN UN CAMPO OCULTO PARA USARLO DESPUÉS PARA LA ACTUALIZACIÓN
+            $('#idProducto').val(product.id);
+    
             // SE PONE LA BANDERA DE EDICIÓN EN true
             edit = true;
         });
         e.preventDefault();
-    });    
+    });
+      
 });

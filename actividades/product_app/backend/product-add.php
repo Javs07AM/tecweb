@@ -23,7 +23,7 @@ if (isset($_POST['nombre'])) {
         $response['message'] = 'El nombre debe ser requerido y tener 100 caracteres o menos.';
     } elseif (empty($marca)) {
         $response['message'] = 'La marca debe ser requerida.';
-    } elseif (empty($modelo) || strlen($modelo) > 25) {
+    } elseif (empty($modelo)) {
         $response['message'] = 'El modelo debe ser requerido y tener 25 caracteres o menos.';
     } elseif (!is_numeric($precio) || $precio <= 99.99) {
         $response['message'] = 'El precio debe ser requerido y debe ser mayor a 99.99.';
