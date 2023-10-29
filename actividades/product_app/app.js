@@ -120,48 +120,59 @@ $(document).ready(function(){
 
     // Espera a que se realice una entrada de texto en el campo de nombre
     $('#nombre').keyup(function() {
-        if ($('#nombre').val()) {
-            let search = $('#nombre').val();
+        const nombre = $('#nombre').val();
+        if (nombre) {
             $.ajax({
-                url: './backend/product-search-name.php', // Ruta al archivo PHP para buscar productos por nombre
-                data: { nombre: search }, // Enviando el nombre del producto como parámetro POST
-                type: 'POST', // Utilizar una solicitud POST
+                url: './backend/product-search.php?search=' + nombre,
+                type: 'GET',
                 success: function(response) {
-                   console.log(response);
-                    // Limpiar la lista de productos antes de mostrar nuevos resultados
-                    $('#products').empty();
-                    if (response.status === 'success') {
-                        if (response.data.length > 0) {
-                            response.data.forEach(function(product) {
-                                // Agrega una fila a la tabla para cada producto
-                                $('#products').append(
-                                    `<tr>
-                                        <td>${product.id}</td>
-                                        <td>${product.nombre}</td>
-                                        <td>${product.marca}</td>
-                                        <td>${product.modelo}</td>
-                                        <td>${product.precio}</td>
-                                        <td>${product.detalles}</td>
-                                        <td>${product.unidades}</td>
-                                        <td>${product.imagen}</td>
-                                    </tr>`
-                                );
+                    if (!response.error) {
+                        const productos = JSON.parse(response);
+                        if (Object.keys(productos).length > 0) {
+                            let template = '';
+                            let template_bar = '';
+                            productos.forEach(producto => {
+                                let descripcion = '';
+                                descripcion += '<li>precio: ' + producto.precio + '</li>';
+                                descripcion += '<li>unidades: ' + producto.unidades + '</li>';
+                                descripcion += '<li>modelo: ' + producto.modelo + '</li>';
+                                descripcion += '<li>marca: ' + producto.marca + '</li>';
+                                descripcion += '<li>detalles: ' + producto.detalles + '</li>';
+                                template += `
+                                    <tr productId="${producto.id}">
+                                        <td>${producto.id}</td>
+                                        <td><a href="#" class="product-item">${producto.nombre}</a></td>
+                                        <td><ul>${descripcion}</ul></td>
+                                        <td>
+                                            <button class="product-delete btn btn-danger">
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `;
+                                template_bar += `
+                                    <li>${producto.nombre}</il>
+                                `;
                             });
+                            $('#product-result').show();
+                            $('#container').html(template_bar);
+                            $('#products').html(template);
                         } else {
-                            // Mostrar un mensaje si no se encontraron productos
-                            $('#products').html(`<tr><td colspan="8">No se encontraron productos con ese nombre.</td></tr>`);
+                            // Si no se encontraron productos, puedes mostrar un mensaje en #product-result
+                            $('#product-result').html('No se encontraron productos');
                         }
-                    } 
-                },
-                error: function(error) {
-                    console.error(error);
+                    } else {
+                        $('#product-result').html('Error en la búsqueda');
+                    }
                 }
             });
         } else {
-            // Limpiar la lista de productos si no hay texto en la búsqueda
-            $('#products').empty();
+            // Si no hay un nombre ingresado, oculta #product-result
+            $('#product-result').hide();
         }
     });
+    
+
     
 
 
@@ -182,33 +193,51 @@ $(document).ready(function(){
     // Validaciones
     if (nombre.length === 0 || nombre.length > 100) {
         alert('El nombre debe ser requerido y tener 100 caracteres o menos.');
+        $('#nombre').addClass('is-invalid');
         return;
+    } else {
+        $('#nombre').removeClass('is-invalid').addClass('is-valid');
     }
-
+    
     if (marca.length === 0) {
         alert('La marca debe ser requerida.');
+        $('#marca').addClass('is-invalid');
         return;
+    } else {
+        $('#marca').removeClass('is-invalid').addClass('is-valid');
     }
-
+    
     if (modelo.length === 0) {
         alert('El modelo debe ser requerido y tener 25 caracteres o menos.');
+        $('#modelo').addClass('is-invalid');
         return;
+    } else {
+        $('#modelo').removeClass('is-invalid').addClass('is-valid');
     }
-
+    
     if (isNaN(precio) || precio <= 99.99) {
         alert('El precio debe ser requerido y debe ser mayor a 99.99.');
+        $('#precio').addClass('is-invalid');
         return;
+    } else {
+        $('#precio').removeClass('is-invalid').addClass('is-valid');
     }
-
+    
     if (detalles.length > 250) {
         alert('Los detalles deben tener 250 caracteres o menos.');
+        $('#detalles').addClass('is-invalid');
         return;
+    } else {
+        $('#detalles').removeClass('is-invalid').addClass('is-valid');
     }
-
+    
     if (isNaN(unidades) || unidades < 0) {
         alert('Las unidades deben ser requeridas y el número registrado debe ser mayor o igual a 0.');
+        $('#unidades').addClass('is-invalid');
         return;
-    }
+    } else {
+        $('#unidades').removeClass('is-invalid').addClass('is-valid');
+    }    
 
     if (imagen === '') {
         // Si no se proporciona una ruta de imagen, usa una ruta por defecto
