@@ -1,0 +1,91 @@
+<CatalogoVOD>
+    <!-- Usuario 1 -->
+    <cuenta>
+        <correo>javs@syntax.com</correo>
+        <perfiles>
+            <perfil>
+                <!-- Perfil 1 -->
+                <usuario>Javs</usuario>
+                <idioma>Español</idioma>
+            </perfil>
+            <!-- Perfil 2 -->
+            <perfil>
+                <usuario>Gojo</usuario>
+                <idioma>Japones</idioma>
+            </perfil>
+        </perfiles>
+    </cuenta>
+
+
+    <!-- Géneros de Películas -->
+    <contenido>
+        <!-- Género 1 -->
+        <peliculas>
+            <genero>
+                <nombre>Acción</nombre>
+
+                <!-- Títulos de Películas -->
+                <titulo>
+                    <nombre>Heart of Stone</nombre>
+                    <duracion>122 minutos</duracion>
+                </titulo>
+
+                <titulo>
+                    <nombre>The Mother</nombre>
+                    <duracion>118 minutos</duracion>
+                </titulo>
+
+                <titulo>
+                    <nombre>Spiderman-A traves del universo</nombre>
+                    <duracion>140 minutos</duracion>
+                </titulo>
+
+                <titulo>
+                    <nombre>Spider-Man 3</nombre>
+                    <duracion>139 minutos</duracion>
+                </titulo>
+            </genero>
+        </peliculas>
+
+        <!-- Género 2 -->
+        <peliculas>
+            <genero>
+                <nombre>Comedia</nombre>
+
+                <!-- Títulos de Películas -->
+                <titulo>
+                    <nombre>Son como niños</nombre>
+                    <duracion>95 minutos</duracion>
+                </titulo>
+
+                <titulo>
+                    <nombre>¿Donde están las rubias?</nombre>
+                    <duracion>100 minutos</duracion>
+                </titulo>
+
+                <titulo>
+                    <nombre>Scary Movie</nombre>
+                    <duracion>90 minutos</duracion>
+                </titulo>
+
+                <titulo>
+                    <nombre>¿Y que pasó ayer?</nombre>
+                    <duracion>105 minutos</duracion>
+                </titulo>
+            </genero>
+        </peliculas>
+
+        <!-- Géneros de Programas -->
+        <programas>
+            <!-- Género 1 -->
+            <genero>
+                <nombre>Drama</nombre>
+            </genero>
+
+            <!-- Género 2 -->
+            <genero>
+                <nombre>Documental</nombre>
+            </genero>
+        </programas>
+    </contenido>
+</CatalogoVOD>
