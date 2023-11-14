@@ -1,8 +1,8 @@
 <?php
-    use BACKEND\API\Productos;
-    require_once __DIR__.'/API/Productos.php';
+    use BACKEND\API\Delete\Eliminar as Eliminar;
+    require_once __DIR__.'/API/Delete/Eliminar.php';
 
-    $productos = new Productos('marketzone');
+    $productos = new Eliminar('marketzone');
     $productos->delete( $_POST['id'] );
     echo $productos->getResponse();
 ?>

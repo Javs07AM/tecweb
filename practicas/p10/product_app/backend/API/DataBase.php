@@ -3,12 +3,13 @@ namespace BACKEND\API;
 
 abstract class DataBase {
     protected $conexion;
+    protected $response;
 
     public function __construct($database) {
         $this->conexion = @mysqli_connect(
             'localhost',
             'root',
-            '12345678a',
+            '19Molletes*eb',
             $database
         );
     
@@ -21,6 +22,11 @@ abstract class DataBase {
         /*else {
             echo 'Base de datos encontrada';
         }*/
+    }
+
+    public function getResponse() {
+        // SE HACE LA CONVERSIÓN DE ARRAY A JSON
+        return json_encode($this->response, JSON_PRETTY_PRINT);
     }
 }
 ?>

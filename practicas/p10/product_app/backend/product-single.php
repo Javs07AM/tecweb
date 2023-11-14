@@ -1,8 +1,8 @@
 <?php
-    use BACKEND\API\Productos;
-    require_once __DIR__.'/API/Productos.php';
+    use BACKEND\API\Read\Leer as Leer;
+    require_once __DIR__.'/API/Read/Leer.php';
 
-    $productos = new Productos('marketzone');
+    $productos = new Leer('marketzone');
     $productos->single( $_POST['id'] );
     echo $productos->getResponse();
 ?>

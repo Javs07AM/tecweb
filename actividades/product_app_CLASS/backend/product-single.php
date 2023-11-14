@@ -1,6 +1,6 @@
 <?php
 // Incluir el archivo de conexión a la base de datos
-include_once __DIR__.'/database.php';
+require_once __DIR__.'/DataBase.php';
 
 // Arreglo para almacenar la respuesta
 $response = array();
