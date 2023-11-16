@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE cinefanatico SYSTEM "cinefanatico.dtd">
+<cinefanatico>
+    <!-- Tarjeta 1 -->
+    <tarjeta noserie="123456789" visitas="5" puntos="100">
+        <nombre>Javs Jaeger</nombre>
+        <correo>javs@syntax.com</correo>
+        <telefono tipo="movil">555-1234</telefono>
+        <telefono tipo="casa">555-5678</telefono>
+    </tarjeta>
+
+    <!-- Tarjeta 2 -->
+    <tarjeta noserie="987654321" visitas="10" puntos="200">
+        <nombre>Annie Leonhart</nombre>
+        <correo>annie@syntax.com</correo>
+        <telefono tipo="movil">555-9876</telefono>
+    </tarjeta>
+</cinefanatico>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE CatalogoVOD SYSTEM "serviciovod.dtd">
+<CatalogoVOD>
+    <!-- Cuenta 1 -->
+    <cuenta correo="javs@syntax.com">
+        <!-- Perfiles -->
+        <perfiles>
+            <!-- Perfil 1 -->
+            <perfil usuario="Javs" idioma="Español" />
+            <!-- Perfil 2 -->
+            <perfil usuario="Gojo" idioma="Japonés" />
+        </perfiles>
+    </cuenta>
+
+    <!-- Contenido -->
+    <contenido>
+        <!-- Género 1 -->
+        <peliculas genero="Acción">
+            <!-- Títulos de Películas -->
+            <titulo nombre="Heart of Stone" duracion="122 minutos" />
+            <titulo nombre="The Mother" duracion="118 minutos" />
+            <titulo nombre="Spiderman-A través del universo" duracion="140 minutos" />
+            <titulo nombre="Spider-Man 3" duracion="139 minutos" />
+        </peliculas>
+
+        <!-- Género 2 -->
+        <peliculas genero="Comedia">
+            <!-- Títulos de Películas -->
+            <titulo nombre="Son como niños" duracion="95 minutos" />
+            <titulo nombre="¿Dónde están las rubias?" duracion="100 minutos" />
+            <titulo nombre="Scary Movie" duracion="90 minutos" />
+            <titulo nombre="¿Y qué pasó ayer?" duracion="105 minutos" />
+        </peliculas>
+
+        <!-- Géneros de Programas -->
+        <programas>
+            <!-- Género 1 -->
+            <genero nombre="Drama" />
+            <!-- Género 2 -->
+            <genero nombre="Documental" />
+        </programas>
+    </contenido>
+</CatalogoVOD>
