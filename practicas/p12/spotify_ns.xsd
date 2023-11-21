@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tw="http://tecnologiasweb.com.mx">
+    
+    <!-- Definición del tipo complejo para el elemento Telefono -->
+    <xsd:complexType name="TelefonoType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="tipo" type="xsd:string" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    
+    <!-- Definición del tipo complejo para el elemento Cuenta -->
+    <xsd:complexType name="CuentaType">
+        <xsd:sequence>
+            <xsd:element name="Nombre" type="xsd:string"/>
+            <xsd:element name="Correo" type="xsd:string"/>
+            <xsd:element name="Telefono" type="tw:TelefonoType"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+        <xsd:attribute name="plan" type="xsd:string" use="required"/>
+        <xsd:attribute name="fechaIni" type="xsd:date" use="required"/>
+        <xsd:attribute name="fechaFin" type="xsd:date" use="required"/>
+    </xsd:complexType>
+    
+    <!-- Definición del tipo complejo para el elemento Spotify -->
+    <xsd:complexType name="SpotifyType">
+        <xsd:sequence>
+            <xsd:element name="Cuenta" type="tw:CuentaType"/>
+        </xsd:sequence>
+        <xsd:attribute name="version" type="xsd:string" use="required"/>
+    </xsd:complexType>
+    
+    <!-- Definición del elemento principal -->
+    <xsd:element name="Spotify" type="tw:SpotifyType"/>
+    
+</xsd:schema>
