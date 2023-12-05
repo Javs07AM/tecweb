@@ -1,5 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tw="http://tecnologiasweb.com.mx">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:tw="http://tecnologiasweb.com.mx" 
+    targetNamespace="http://tecnologiasweb.com.mx"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
     
     <!-- Definición del tipo complejo para el elemento Telefono -->
     <xsd:complexType name="TelefonoType">
@@ -15,18 +19,18 @@
         <xsd:sequence>
             <xsd:element name="Nombre" type="xsd:string"/>
             <xsd:element name="Correo" type="xsd:string"/>
-            <xsd:element name="Telefono" type="tw:TelefonoType"/>
-        </xsd:sequence>
+            <xsd:element name="Telefono" type="tw:TelefonoType" minOccurs="0"/>
+        </xsd:sequence>   
         <xsd:attribute name="id" type="xsd:string" use="required"/>
         <xsd:attribute name="plan" type="xsd:string" use="required"/>
-        <xsd:attribute name="fechaIni" type="xsd:date" use="required"/>
-        <xsd:attribute name="fechaFin" type="xsd:date" use="required"/>
+        <xsd:attribute name="fechaIni" type="xsd:date" use="optional"/>
+        <xsd:attribute name="fechaFin" type="xsd:date" use="optional"/>
     </xsd:complexType>
     
     <!-- Definición del tipo complejo para el elemento Spotify -->
     <xsd:complexType name="SpotifyType">
         <xsd:sequence>
-            <xsd:element name="Cuenta" type="tw:CuentaType"/>
+            <xsd:element name="Cuenta" type="tw:CuentaType" minOccurs="1" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute name="version" type="xsd:string" use="required"/>
     </xsd:complexType>

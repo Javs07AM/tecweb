@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CatalogoVOD>
+    <cuenta correo="">
+        <perfiles>
+            <perfil usuerio="" idioma=""/>
+            <perfil usuerio="" idioma=""/>
+        </perfiles>
+    </cuenta>
+    <contenido>
+        <peliculas region="" xmlns="www.cine.com">
+            <genero nombre="">
+                <titulo duracion=""></titulo>
+                <titulo duracion=""></titulo>
+            </genero>
+            <genero nombre="">
+                <titulo duracion=""></titulo>
+                <titulo duracion=""></titulo>
+            </genero>
+        </peliculas>
+        <programas region="" xmlns="www.tv.com">
+            <genero nombre="">
+                <titulo duracion=""></titulo>
+                <titulo duracion=""></titulo>
+            </genero>
+            <genero nombre="">
+                <titulo duracion=""></titulo>
+                <titulo duracion=""></titulo>
+            </genero>
+        </programas>
+    </contenido>
+</CatalogoVOD>

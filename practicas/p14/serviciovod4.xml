@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="catalogovod.xsl" type="text/xsl"?>
+<!DOCTYPE CatalogoVOD SYSTEM "serviciovod_ep.dtd">
+<CatalogoVOD>
+    <cuenta correo="javs@syntax.com">
+        <!-- Perfiles -->
+        <perfiles>
+            <!-- Perfil 1 -->
+            <perfil usuario="Javs" idioma="Español" />
+            <!-- Perfil 2 -->
+            <perfil usuario="Gojo" idioma="Japonés" />
+        </perfiles>
+    </cuenta>
+    <contenido>
+        <peliculas region="USA">
+            <genero nombre="Accion">
+                <titulo duracion="122 minutos">Heart of Stone</titulo>
+                <titulo duracion="118 minutos">The Mother</titulo>
+            </genero>
+            <genero nombre="Comedia">
+                <titulo duracion="95 minutos">Son como niños</titulo>
+                <titulo duracion="100 minutos">¿Dónde están las rubias?</titulo>
+            </genero>
+        </peliculas>
+        <series region="USA">
+            <genero nombre="Drama">
+                <titulo duracion="50 minutos">Dr. House</titulo>
+                <titulo duracion="50 minutos">Game of Thrones</titulo>
+            </genero>
+            <genero nombre="Documental">
+                <titulo duracion="40 minutos">The Act</titulo>
+                <titulo duracion="50 minutos">The Last Dance</titulo>
+            </genero>
+        </series>
+    </contenido>
+</CatalogoVOD>
