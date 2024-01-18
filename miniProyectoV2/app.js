@@ -107,31 +107,42 @@ $(document).ready(function(){
     });
 
     
-    $('#media-form').submit(e => {
-        e.preventDefault();
+   $('#media-form').submit(e => {
+    e.preventDefault();
 
-        let postData = JSON.parse( $('#description').val() );
-        postData['titulo'] = $('#title').val();
-        postData['id'] = $('#mediaId').val();
+    let postData = {
+        titulo: $('#title').val(),
+        tipo: $('#tipo').val(),
+        region: $('input[name="region"]:checked').val(),
+        genero: $('#genero').val(),
+        duracion: $('#duracion').val(),
+        cuenta_id: $('#cuenta_id').val(),
+        id: $('#mediaId').val()
+    };
 
-        const url = edit === false ? './backend/media-add.php' : './backend/media-edit.php';
-        
-        $.post(url, postData, (response) => {
-            console.log(response);
-            let respuesta = JSON.parse(response);
-            let template_bar = '';
-            template_bar += `
-                        <li style="list-style: none;">status: ${respuesta.status}</li>
-                        <li style="list-style: none;">message: ${respuesta.message}</li>
-                    `;
-            $('#title').val('');
-            $('#description').val(JsonString);
-            $('#media-result').show();
-            $('#container').html(template_bar);
-            listarMedios();
-            edit = false;
-        });
+    const url = postData.id ? './backend/media-edit.php' : './backend/media-add.php';
+
+    $.post(url, postData, (response) => {
+        console.log(response);
+        let respuesta = JSON.parse(response);
+        let template_bar = '';
+        template_bar += `
+            <li style="list-style: none;">status: ${respuesta.status}</li>
+            <li style="list-style: none;">message: ${respuesta.message}</li>
+        `;
+        $('#title').val('');
+        $('#tipo').val('');
+        $('input[name="region"]').prop('checked', false);
+        $('#genero').val('');
+        $('#duracion').val('');
+        $('#cuenta_id').val('');
+        $('#mediaId').val('');
+        $('#media-result').show();
+        $('#container').html(template_bar);
+        listarMedios();
     });
+});
+
     
 
     $(document).on('click', '.media-delete', (e) => {
@@ -158,14 +169,24 @@ $(document).ready(function(){
         const id = $(element).attr('mediaId');
         $.post('./backend/media-single.php', {id}, (response) => {
             let medio = JSON.parse(response);
-            $('#title').val(medio.titulo);
-            $('#mediaId').val(medio.id);
-            delete(medio.titulo);
-            delete(medio.eliminado);
-            delete(medio.id);
-            let JsonString = JSON.stringify(medio, null, 2);
-            $('#description').val(JsonString);
-            edit = true;
+        $('#tipo').val(medio.tipo);
+        $('input[name="region"]').filter(`[value="${medio.region}"]`).prop('checked', true);
+        $('#genero').val(medio.genero);
+        $('#duracion').val(medio.duracion);
+        $('#cuenta_id').val(medio.cuenta_id);
+        $('#title').val(medio.titulo);
+        $('#mediaId').val(medio.id);
+        delete(medio.titulo);
+        delete(medio.eliminado);
+        delete (medio.tipo);
+        delete (medio.region);
+        delete (medio.genero);
+        delete (medio.duracion);
+        delete (medio.cuenta_id);
+        delete(medio.id);
+        let JsonString = JSON.stringify(medio, null, 2);
+        $('#description').val(JsonString);
+        edit = true;
         });
         e.preventDefault();
     });    

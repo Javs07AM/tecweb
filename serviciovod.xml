@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CatalogoVOD xmlns="http://starfire.com/vod" Version="1.0">
+    <cuenta correo="chancho@gmail.com">
+        <perfiles>
+            <perfil usuario="chancho" idioma="Español" />
+        </perfiles>
+    </cuenta>
+    <contenido>
+        <peliculas region="MEX">
+            <genero nombre="Accion">
+                <titulo duracion="130">Misión </titulo>
+                <titulo duracion="110">Venganza en la </titulo>
+            </genero>
+            <genero nombre="Gotica">
+                <titulo duracion="90">Decisiones Cruciales</titulo>
+                <titulo duracion="105">Amor </titulo>
+            </genero>
+        </peliculas>
+        <series region="USA">
+            <genero nombre="Anime">
+                <titulo duracion="40">Misterios en el Instituto</titulo>
+                <titulo duracion="35">Aventuras Virtuales</titulo>
+            </genero>
+            <genero nombre="Drama Poderoas">
+                <titulo duracion="55"> Encubierta</titulo>
+                <titulo duracion="48">El Último Testigo</titulo>
+            </genero>
+        </series>
+    </contenido>
+</CatalogoVOD>
